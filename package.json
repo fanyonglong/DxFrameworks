@@ -1,0 +1,25 @@
+{
+  "name": "dxbase",
+  "version": "1.0.0",
+  "description": "base",
+  "main": "index.js",
+  "scripts": {
+    "test": "test index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fanyonglong/DxFrameworks.git"
+  },
+  "keywords": [
+    "dx"
+  ],
+  "author": "fanyonglong",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fanyonglong/DxFrameworks/issues"
+  },
+  "files": [
+    "src"
+  ],
+  "homepage": "https://github.com/fanyonglong/DxFrameworks#readme"
+}
