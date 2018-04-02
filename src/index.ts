@@ -1,2 +1,2 @@
 
-export * from './util'
+import Dx from './instance'

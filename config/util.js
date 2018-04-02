@@ -1,7 +1,7 @@
 const path=require('path');
 const root=path.resolve(__dirname,'../');
 
-function resolve(dir)
+function resolve(dir='')
 {
     return path.join(root,dir);
 }

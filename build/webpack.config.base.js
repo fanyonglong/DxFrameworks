@@ -1,7 +1,8 @@
 const path = require('path');
 const {resolve}=require('../config/util');
 module.exports = {
-  entry:resolve('src/index.js'),
+  context:resolve(),
+  entry:resolve('src/index.ts'),
   output: {
     filename: '[name].js',
     path: resolve('dist')

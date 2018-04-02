@@ -25,6 +25,7 @@ module.exports=(env, argv)=>{
             new CleanWebpackPlugin(['dist']),
             new HtmlWebpackPlugin({
               title: 'Development',
+              template:'',
               filename:'index.html'
             })
         ],
