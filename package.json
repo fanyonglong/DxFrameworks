@@ -4,9 +4,9 @@
   "description": "base",
   "main": "index.js",
   "scripts": {
-    "test": "test index.js",
-    "dev":"",
-    "build":""
+    "test": "node build/webpack.common.js",
+    "dev":"webpack-dev-server --config build/webpack.dev.js",
+    "build":"webpack --config build/webpack.prod.js"
   },
   "repository": {
     "type": "git",

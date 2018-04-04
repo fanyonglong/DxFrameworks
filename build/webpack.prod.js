@@ -1,7 +1,7 @@
 const path=require('path');
 const webpack=require('webpack');
 const merge=require('webpack-merge');
-const baseConfig=require('./webpack.config.base');
+const baseConfig=require('./webpack.common');
 const CleanWebpackPlugin=require('clean-webpack-plugin');
 const HtmlWebpackPlugin=require('html-webpack-plugin');
 const config=require('../config');
@@ -21,18 +21,13 @@ module.exports = {
 */
 module.exports=(env, argv)=>{
     let webpackConfig=merge(baseConfig,{
-        mode:'development',//
+        mode:'production',//
         devtool: 'inline-source-map',
-        plugns:[
-            new CleanWebpackPlugin(['dist']),
-            new HtmlWebpackPlugin({
-              title: 'Development',
-              filename:'index.html'
+        plugins:[
+            new CleanWebpackPlugin(['dist'],{
+                root:resolve()
             })
-        ],
-        devServer: {
-             contentBase: resolve('dist')
-        }
+        ]
     });
     return webpackConfig;
 }

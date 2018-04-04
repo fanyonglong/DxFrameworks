@@ -1,9 +1,8 @@
-interface DxOptions{
+export interface DxOptions{
     
 }
 
-function Dx(options:DxOptions)
+export default function Dx(options:DxOptions)
 {
 
 }
-export default Dx

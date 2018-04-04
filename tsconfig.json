@@ -54,7 +54,8 @@
     "node_modules"
   ],
   "include": [
-    "./src/**/*.ts"
+    "./src/**/*.ts",
+    "./packages/**/*.ts"
   ],
   "compileOnSave": false,
   "extends": "",
