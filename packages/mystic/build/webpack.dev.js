@@ -22,6 +22,7 @@ module.exports=(env, argv)=>{
         mode:'development',//
         devtool: 'inline-source-map',
         plugins:[
+            new webpack.HotModuleReplacementPlugin(),
             new CleanWebpackPlugin(['dist'],{
                 root:resolve(),
                 verbose:false
@@ -42,6 +43,8 @@ module.exports=(env, argv)=>{
              noInfo: true, //启用 noInfo 后，诸如「启动时和每次保存之后，那些显示的 webpack 包(bundle)信息」的消息将被隐藏。错误和警告仍然会显示。
              open:'chrome', //当open启用时，开发服务器将打开浏览器。
              index:'index.html',
+             port:9527,
+             host:'localhost',
              progress:true, //将运行进度输出到控制台。
             // openPage:null //指定打开浏览器时导航到的页面。
              quiet: false,//启用quiet后，除了初始启动信息之外的任何内容都不会被打印到控制台。这也意味着来自的WebPack的错误或警告在控制台不可见。
