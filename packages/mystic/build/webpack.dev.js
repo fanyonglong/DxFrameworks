@@ -18,22 +18,29 @@ module.exports = {
 }
 */
 module.exports=(env, argv)=>{
+
+    let plugins=[
+      new webpack.HotModuleReplacementPlugin(),
+      new CleanWebpackPlugin(['dist'],{
+          root:resolve(),
+          verbose:false
+      })
+  
+   ];
+
+    if(!argv.notHtml)
+    {
+        plugins.push(new HtmlWebpackPlugin({
+          title: 'Development',
+          template:resolve('example/index.html'),
+          filename:'index.html'
+        }));
+    }
     let webpackConfig=merge(baseConfig,{
         mode:'development',//
         devtool: 'inline-source-map',
-        plugins:[
-            new webpack.HotModuleReplacementPlugin(),
-            new CleanWebpackPlugin(['dist'],{
-                root:resolve(),
-                verbose:false
-            }),
-            new HtmlWebpackPlugin({
-              title: 'Development',
-              template:resolve('example/index.html'),
-              filename:'index.html'
-            })
-        ],
-        devtool:'cheap-module-eval-source-map',
+        plugins:plugins,
+      //  devtool:'cheap-module-eval-source-map',
         devServer: {
              contentBase: resolve('dist'),
              compress: true, // 一切服务都启用gzip 压缩：

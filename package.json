@@ -6,7 +6,8 @@
   "scripts": {
     "test": "node build/webpack.common.js",
     "dev":"webpack-dev-server --config build/webpack.dev.js",
-    "build":"webpack --config build/webpack.prod.js"
+    "build":"webpack --config build/webpack.prod.js",
+    "build:dev":"webpack --config build/webpack.dev.js --not-html"
   },
   "repository": {
     "type": "git",

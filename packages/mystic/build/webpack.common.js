@@ -5,7 +5,10 @@ module.exports = {
   context:resolve(),
   entry:'./src/index.js',
   output: {
-    filename: '[name].js',
+	filename: '[name].js',
+	publicPath:'',
+	library: "var",//
+	pathinfo: false,//告诉 webpack 在 bundle 中引入「所包含模块信息」的相关注释。此选项默认值是 false，并且不应该用于生产环境(production)，但是对阅读开发环境(development)中的生成代码(generated code)极其有用。
     path:resolve('dist')
   },
   module: {

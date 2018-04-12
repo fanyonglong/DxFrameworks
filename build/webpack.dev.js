@@ -32,6 +32,14 @@ module.exports=(env, argv)=>{
               filename:'index.html'
             })
         ],
+        /**
+         * 注意不同devtool设置的性能差异。
+
+"eval" 具有最佳性能，但不协助您编译代码。
+该cheap-source-map变种是更好的性能，如果你能略差映射品质生活。
+eval-source-map为增量构建使用变体。
+=>在大多数情况下cheap-module-eval-source-map是最好的选择。
+        */
         devtool:'cheap-module-eval-source-map',
         devServer: {
              contentBase: resolve('dist'),

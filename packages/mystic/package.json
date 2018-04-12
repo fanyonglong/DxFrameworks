@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev":"webpack-dev-server --config build/webpack.dev.js",
-    "build":"webpack --config build/webpack.prod.js"
+    "dev":"webpack-dev-server --devtool cheap-module-eval-source-map --config build/webpack.dev.js",
+    "build":"webpack --config build/webpack.prod.js",
+    "build:dev":"webpack --config build/webpack.dev.js --not-html"
   },
   "keywords": [],
   "dependencies": {},
