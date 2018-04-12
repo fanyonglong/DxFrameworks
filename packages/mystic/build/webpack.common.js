@@ -3,7 +3,7 @@ const {resolve}=require('../config/util');
 //console.log(resolve('dist'));
 module.exports = {
   context:resolve(),
-  entry:'./src/index.js',
+  entry:'./src/core/index.js',
   output: {
 	filename: '[name].js',
 	publicPath:'',
