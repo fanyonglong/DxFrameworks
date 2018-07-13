@@ -1,11 +1,12 @@
 /**
  * 劫持array方法 
 */
-const arrayMethods=Object.create(Array.prototype);
-const methodNames=['shift','unshift','push','pop','slice','splice'];
-methodNames.forEach(name=>{
+export const arrayMethods=Object.create(Array.prototype);
+export const arrayMethodNames=['shift','unshift','push','pop','slice','splice'];
+arrayMethodNames.forEach(name=>{
     let orgMethod=arrayMethods[name];
-    arrayMethods[name]=function(){
-        
+    arrayMethods[name]=function(...args:Array<any>){
+
     }
 })
+

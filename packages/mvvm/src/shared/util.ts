@@ -35,9 +35,12 @@ export function remove(array:Array<any>,value:any):Array<any>|void{
         return array.splice(index,1);
     }
 }
-declare namespace window{
-    interface Set{
-        
+
+let SimpleSet=global.Set?global.Set:(function()
+{
+    function SimpleSet()
+    {
+
     }
-}
-window.Set
+    return SimpleSet;
+})();
