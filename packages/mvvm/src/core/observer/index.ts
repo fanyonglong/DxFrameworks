@@ -7,7 +7,7 @@ import {VNode} from '../vdom/vnode'
 
 
 /**
- * 观察类
+ * 观察对象属性变化
  */
 export class Observer{
     value:any;
@@ -33,7 +33,7 @@ export class Observer{
     {
           let keys=Object.keys(obj);
           for (let i = 0,len=keys.length;i < len; i++) {
-            defineReactive(obj,keys[i],obj[keys[i]])
+            defineReactive(obj,keys[i]);
           }
     }
     // 把数组转换成监听数组
@@ -85,7 +85,7 @@ export function observe (value: any, asRootData?:boolean): Observer | void {
  * @param customSetter 自定义set函数
  * @param shallow  是否浅监听，默认如果值是对象深度监听，
  */
-export function defineReactive(obj:Object,key:string,val:any,customSetter?:Function,shallow?:boolean){
+export function defineReactive(obj:Object,key:string,val?:any,customSetter?:Function,shallow?:boolean){
   const dep = new Dep();// 创建一个依赖对象
   const property = Object.getOwnPropertyDescriptor(obj, key)
   // 如果属性不可配置，直接返回
@@ -94,12 +94,65 @@ export function defineReactive(obj:Object,key:string,val:any,customSetter?:Funct
   }
   const getter = property && property.get
   const setter = property && property.set
-  // 
+  // 如果不存在getter或存在setter并且只有两个参数,就设置值
   if ((!getter || setter) && arguments.length === 2) {
     val = obj[key];
   }
-
+  // 如果不浅监听，就去监听值对象
+  let childOb = !shallow && observe(val)
+  Object.defineProperty(obj, key, {
+    enumerable: true,
+    configurable: true,
+    get: function reactiveGetter () {
+      const value = getter ? getter.call(obj) : val
+      if (Dep.target) {
+        dep.depend()
+        // 如果值是对象，不为null
+        if (childOb) {
+          (<Observer>childOb).dep.depend();//对值对象添加依赖
+          // 如果值是数组，就递归处理
+          if (Array.isArray(value)) {
+            dependArray(value)
+          }
+        }
+      }
+      return value
+    },
+    set: function reactiveSetter (newVal) {
+      const value = getter ? getter.call(obj) : val;// 存在getter，就从getter获取值
+      // 如果新值与旧值相等，就返回
+      if (newVal === value || (newVal !== newVal && value !== value)) {
+        return
+      }
+      // 如果不等于生产环境，执行自定义setter
+      if (process.env.NODE_ENV !== 'production' && customSetter) {
+        customSetter()
+      }
+      // 如果setter不为空，通过setter赋值
+      if (setter) {
+        setter.call(obj, newVal)
+      } else {
+        val = newVal
+      }
+      childOb = !shallow && observe(newVal);// 如果不浅监听，就去监听值对象
+      dep.notify();// 通知依赖函数，值发生变化
+    }
+  })
 }
+/**
+ * 递归对数组值对象添加依赖
+ * @param value 
+ */
+function dependArray (value: Array<any>) {
+  for (let e, i = 0, l = value.length; i < l; i++) {
+    e = value[i]
+    e && e.__ob__ && e.__ob__.dep.depend()
+    if (Array.isArray(e)) {
+      dependArray(e)
+    }
+  }
+}
+
 
  /**
  * 原型扩展
