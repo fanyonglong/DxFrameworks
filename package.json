@@ -6,7 +6,7 @@
   "scripts": {
     "testmvvm": "jest --config ./packages/mvvm/jest.config.js",
     "dev": "webpack-dev-server --config build/webpack.dev.js",
-    "start":"",
+    "start": "",
     "build": "webpack --config build/webpack.prod.js",
     "build:dev": "webpack --config build/webpack.dev.js --not-html"
   },
