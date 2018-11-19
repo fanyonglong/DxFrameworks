@@ -39,7 +39,6 @@ export default {
   
     plugins:[...plugins,
       
-        resolve(),
         /**
          * 所有选项均按照Babel文档进行，但以下情况除外：
             options.externalHelpers：一个布尔值，指示是否捆绑Babel助手
@@ -97,6 +96,7 @@ export default {
                 // exclude: 'node_modules/**' // 只编译我们的源代码
             }
         ),
+        resolve(),
         commonjs()
     ],
     external:[]
