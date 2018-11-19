@@ -2,7 +2,7 @@
 /**
  * 支持类扩展、装饰器、混合
  */
-export function Class(){
+function Class(){
 
 }
 Class.extend=function(proto){
@@ -40,3 +40,5 @@ Class.decorator=function(...decorators){
         decorator(this);
     })
 }
+
+export default Class

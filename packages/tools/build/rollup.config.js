@@ -12,7 +12,7 @@ export default {
 
     input: path.resolve(root,'src/index.js'),
     output: {
-        file:path.resolve(root, 'dist/dx.tools.js'),
+        file:path.resolve(root, 'dist/index.js'),
         format: 'umd',
         name:"dx", 
         //字符串以 前置/追加 到文件束(bundle)。(注意:“banner”和“footer”选项不会破坏sourcemaps)

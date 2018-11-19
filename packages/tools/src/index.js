@@ -1,21 +1,3 @@
-export * from './util'
+export * from './core'
 export * from './function'
-
-export var aa=()=>{
-
-}
-export class BClass{
-  nageame ='fd';
-  static aa = 43;
-  constructor(){
-
-  }
-  age(){
-
-  }
-}
-export class AClass extends BClass{
-    age(){
-        
-    }
-  }
+export * from './util'
