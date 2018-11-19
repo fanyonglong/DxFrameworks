@@ -1,1 +1,1 @@
-export * from './over-rest'
+export {default as rest} from './rest'

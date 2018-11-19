@@ -1,3 +1,3 @@
-export default function each(){
+export default function each(target,callback,context){
     
 }

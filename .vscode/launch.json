@@ -18,6 +18,17 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "启动程序Tools-JEST",
+            "program": "${workspaceFolder}\\node_modules\\jest\\bin\\jest.js",
+            "args": [
+                "--config",
+                "./packages/tools/jest.config.js"
+            ]
+
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "Launch via NPM",
             "runtimeExecutable": "npm",
             "runtimeArgs": [

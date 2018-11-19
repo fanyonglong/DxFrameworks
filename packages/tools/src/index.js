@@ -14,7 +14,7 @@ export class BClass{
 
   }
 }
-export class AClass{
+export class AClass extends BClass{
     age(){
         
     }

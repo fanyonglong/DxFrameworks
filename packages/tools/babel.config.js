@@ -107,7 +107,7 @@ let presets = [
   module.exports = { 
       presets,
       plugins,
-      include:['./src'],
-      //exclude: 'node_modules/**' // 只编译我们的源代码
+      include:['./src/'],
+     // exclude: 'node_modules/**' // 只编译我们的源代码
       exclude: 'node_modules/**' // 只编译我们的源代码
  };
