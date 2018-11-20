@@ -7,3 +7,4 @@ export function hasOwn(target,key){
 export function setPrototypeOf(target,value){
 
 }
+

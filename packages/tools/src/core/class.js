@@ -13,10 +13,9 @@ Class.extend=function(proto){
             typeof superClass
         );
     }
-    var subClass=function(){
-
+    var subClass=proto.constructor||function(){
     }
-    subClass.prototype = Object.create(superClass && superClass.prototype, {
+    subClass.fn=subClass.prototype = Object.create(superClass && superClass.prototype, {
         constructor: {
             value: subClass,
             enumerable: false,

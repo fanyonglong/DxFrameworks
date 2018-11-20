@@ -19,7 +19,7 @@ function observe(value){
 }
 
 function defineReactive(obj){
-
+        
 }
 
 
