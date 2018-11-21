@@ -3,6 +3,11 @@ const _hasOwnProperty=Object.prototype.hasOwnProperty;
 export function hasOwn(target,key){
     return _hasOwnProperty.call(target,key);
 }
+export function property(key) {
+    return function(obj) {
+      return obj == null ? void 0 : obj[key];
+    };
+}
 
 if (typeof Object.assign != 'function') {
     // Must be writable: true, enumerable: false, configurable: true
