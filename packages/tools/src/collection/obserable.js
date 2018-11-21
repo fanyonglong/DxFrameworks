@@ -1,4 +1,4 @@
-import {isPlainObject,isArray,hasOwn} from '../util/util'
+import {isPlainObject,isArray,hasOwn} from '../util'
 
 //constants
 const OB_OBJ_KEY='__ob__';

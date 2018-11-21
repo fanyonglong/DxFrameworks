@@ -1,4 +1,4 @@
-import overRest from './_overRest'
+import overRest from '../internal/_overRest'
 import identity from './identity'
 /**
  * 包装函数，分配参数

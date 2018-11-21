@@ -23,12 +23,14 @@ Class.extend=function(proto){
             configurable: true
         }
     });
-    if (superClass){
-        // ie11 支持:setPrototypeOf 低版本chrome和FireFox支持__proto__
-        Object.setPrototypeOf
-          ? Object.setPrototypeOf(subClass, superClass)
-          : (subClass.__proto__ = superClass);
-    }
+    // 继承静态属性和方法
+    
+    // if (superClass){
+    //     // ie11 支持:setPrototypeOf 低版本chrome和FireFox支持__proto__
+    //     Object.setPrototypeOf
+    //       ? Object.setPrototypeOf(subClass, superClass)
+    //       : (subClass.__proto__ = superClass);
+    // }
     return subClass;
 }
 /**

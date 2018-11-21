@@ -84,10 +84,10 @@ let presets = [
   // 从上到下
   let plugins=[
   // ['@babel/plugin-external-helpers'],
-   ['@babel/plugin-proposal-class-properties',{ "loose": true }]
-    // ["@babel/plugin-transform-classes", {
-    //   "loose": false
-    // }],
+   ['@babel/plugin-proposal-class-properties',{ "loose": true }],
+     ["@babel/plugin-transform-classes", {
+       "loose": true
+    }],
     /*** 
      * 该transform-runtime变压器插件做了三两件事：
     @babel/runtime/regenerator使用生成器/异步功能时自动需要（可通过regenerator选项切换）。

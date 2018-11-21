@@ -1,10 +1,10 @@
 /* @desc 工具库 
  @author fanyonglong */
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-  typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (factory((global.dx = {})));
-}(this, (function (exports) { 'use strict';
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('os')) :
+  typeof define === 'function' && define.amd ? define(['exports', 'os'], factory) :
+  (factory((global.dx = {}),global.os));
+}(this, (function (exports,os) { 'use strict';
 
   function _typeof(obj) {
     if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
@@ -41,12 +41,13 @@
         writable: true,
         configurable: true
       }
-    });
-
-    if (superClass) {
-      // ie11 支持:setPrototypeOf 低版本chrome和FireFox支持__proto__
-      Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-    }
+    }); // 继承静态属性和方法
+    // if (superClass){
+    //     // ie11 支持:setPrototypeOf 低版本chrome和FireFox支持__proto__
+    //     Object.setPrototypeOf
+    //       ? Object.setPrototypeOf(subClass, superClass)
+    //       : (subClass.__proto__ = superClass);
+    // }
 
     return subClass;
   };
@@ -66,6 +67,288 @@
       decorator(_this);
     });
   };
+
+  var _toString = Object.prototype.toString;
+  var _funcString = Function.prototype.toString;
+  function isFunction(obj) {
+    return typeof obj == 'function';
+  }
+  function isArray(obj) {
+    return _toString.call(obj) == '[object Array]';
+  }
+  function isPlainObject(obj) {
+    return _toString.call(obj) == '[object Object]';
+  }
+  function isObject(obj) {
+    return _typeof(obj) == 'object';
+  }
+  var _reg_native = /\[native code\]/;
+  function isNative(obj) {
+    if (!isFunction(obj)) {
+      return false;
+    }
+
+    return _reg_native.test(_funcString.call(obj));
+  }
+  function isBoolean(obj) {
+    return typeof obj === 'boolean';
+  }
+  function isString(obj) {
+    return typeof obj === 'string';
+  }
+
+  var _hasOwnProperty = Object.prototype.hasOwnProperty;
+  function hasOwn(target, key) {
+    return _hasOwnProperty.call(target, key);
+  }
+
+  if (typeof Object.assign != 'function') {
+    // Must be writable: true, enumerable: false, configurable: true
+    Object.defineProperty(Object, "assign", {
+      value: function assign(target, varArgs) {
+
+        if (target == null) {
+          // TypeError if undefined or null
+          throw new TypeError('Cannot convert undefined or null to object');
+        }
+
+        var to = Object(target);
+
+        for (var index = 1; index < arguments.length; index++) {
+          var nextSource = arguments[index];
+
+          if (nextSource != null) {
+            // Skip over if undefined or null
+            for (var nextKey in nextSource) {
+              // Avoid bugs when hasOwnProperty is shadowed
+              if (Object.prototype.hasOwnProperty.call(nextSource, nextKey)) {
+                to[nextKey] = nextSource[nextKey];
+              }
+            }
+          }
+        }
+
+        return to;
+      },
+      writable: true,
+      configurable: true
+    });
+  }
+
+  function completeAssign(target) {
+    for (var _len = arguments.length, sources = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      sources[_key - 1] = arguments[_key];
+    }
+
+    sources.forEach(function (source) {
+      var descriptors = Object.keys(source).reduce(function (descriptors, key) {
+        descriptors[key] = Object.getOwnPropertyDescriptor(source, key);
+        return descriptors;
+      }, {}); // Object.assign 默认也会拷贝可枚举的Symbols
+
+      Object.getOwnPropertySymbols(source).forEach(function (sym) {
+        var descriptor = Object.getOwnPropertyDescriptor(source, sym);
+
+        if (descriptor.enumerable) {
+          descriptors[sym] = descriptor;
+        }
+      });
+      Object.defineProperties(target, descriptors);
+    });
+    return target;
+  }
+
+  var utils = ({
+    hasOwn: hasOwn,
+    completeAssign: completeAssign
+  });
+
+  /**
+   * 添加监听事件
+   * @param {object} target 
+   * @param {string} type 
+   * @param {function} handler 
+   */
+
+  function listenerToObj(target, type, handler) {
+    var context = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : target;
+    var first = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
+    var once = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : false;
+    var eventLists = target.__events__;
+
+    if (!eventLists) {
+      eventLists = target.__events__ = Object.create(null);
+    }
+
+    var events = eventLists[type];
+    var event = {
+      context: context,
+      handler: handler,
+      once: once
+    };
+
+    if (!events) {
+      eventLists[type] = event;
+    } else if (isPlainObject(events)) {
+      eventLists[type] = first ? [event, events] : [events, event];
+    } else {
+      events[first ? 'unshift' : 'push'](event);
+    }
+  }
+  /**
+   * 移除监听事件
+   * @param {object} target 
+   * @param {string} [type] 
+   * @param {function} [handler] 
+   */
+
+
+  function removeListenerToObj(target, type, handler) {
+    var eventLists = target.__events__;
+
+    if (!eventLists) {
+      return false;
+    }
+
+    if (!type) {
+      target.__events__ = null;
+      delete target.__events__;
+      return false;
+    }
+
+    var events = eventLists[type];
+
+    if (!events) {
+      return false;
+    }
+
+    if (isPlainObject(events) || !isFunction(handler)) {
+      eventLists[type] = null;
+    } else {
+      var event;
+
+      for (var i = events.length - 1; i >= 0; i--) {
+        event = events[i];
+
+        if (event.handler === handler) {
+          events.splice(i, 1);
+        }
+      }
+    }
+  }
+  /**
+   * 触发监听事件
+   * @param {object} target 
+   * @param {string} type 
+   * @param {any} [data] 
+   */
+
+
+  function dispatchToObj(target, type) {
+    var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
+    var eventLists = target.__events__;
+
+    if (eventLists) {
+      var events = eventLists[type],
+          handler,
+          context;
+
+      if (events && isPlainObject(events)) {
+        handler = events.handler;
+        context = events.context;
+
+        if (events.once) {
+          eventLists[type] = null;
+        }
+
+        handler.apply(context, data);
+      } else if (events) {
+        var _events = events.slice(0);
+
+        var event;
+
+        for (var i = 0, len = _events.length; i < len; i++) {
+          event = _events[i];
+          handler = event.handler;
+          context = event.context;
+
+          if (event.once) {
+            events.splice(i, 1);
+          }
+
+          console.log(type, context);
+          handler.apply(context, data);
+        }
+      }
+    }
+  }
+
+  var Observable =
+  /*#__PURE__*/
+  function () {
+    function Observable() {}
+
+    var _proto = Observable.prototype;
+
+    /**
+     * 添加事件
+     * @param {string|object} name 
+     * @param {function} handler 
+     * @param {any} [context] 
+     * @param {boolean} first 
+     * @param {boolean} once
+     * @returns {Observable} 
+     */
+    _proto.on = function on(name, handler, context) {
+      var first = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+      var once = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
+      var that = this,
+          isFunc = isFunction(handler);
+
+      if (!isFunc) {
+        once = first;
+        first = context;
+        context = handler;
+        handler = undefined;
+      }
+
+      if (isPlainObject(name)) {
+        var orgHandler = handler;
+
+        for (var key in name) {
+          if (hasOwn(name, key)) {
+            handler = isFunc ? orgHandler : isString(name[key]) ? that[name] : name[key];
+            isFunction(handler) && listenerToObj(that, key, handler, context, first, once);
+          }
+        }
+      } else {
+        listenerToObj(that, name, handler, context, first, once);
+      }
+
+      return this;
+    };
+
+    _proto.one = function one(name, handler, context) {
+      var first = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+      return this.on(name, handler, context, first, true);
+    };
+
+    _proto.off = function off(name, handler) {
+      removeListenerToObj(this, name, handler);
+      return this;
+    };
+
+    _proto.emit = function emit(name) {
+      for (var _len = arguments.length, data = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+        data[_key - 1] = arguments[_key];
+      }
+
+      dispatchToObj(this, name, data);
+      return this;
+    };
+
+    return Observable;
+  }();
 
   /**
    * A faster alternative to `Function#apply`, this function invokes `func`
@@ -161,42 +444,19 @@
     return overRest(fn, start, identity);
   }
 
-  var _toString = Object.prototype.toString;
-  function isFunction(obj) {
-    return typeof obj == 'function';
-  }
-  function isArray(obj) {
-    return _toString.call(obj) == '[object Array]';
-  }
-  function isPlainObject(obj) {
-    return _toString.call(obj) == '[object Object]';
-  }
-  function isObject(obj) {
-    return _typeof(obj) == 'object';
-  }
-
-  var _hasOwnProperty = Object.prototype.hasOwnProperty;
-  function hasOwn(target, key) {
-    return _hasOwnProperty.call(target, key);
-  }
-  function setPrototypeOf(target, value) {}
-
-
-
-  var utils = ({
-    isFunction: isFunction,
-    isArray: isArray,
-    isPlainObject: isPlainObject,
-    isObject: isObject,
-    hasOwn: hasOwn,
-    setPrototypeOf: setPrototypeOf
-  });
-
   var util = utils;
 
   exports.util = util;
   exports.Class = Class;
+  exports.Observable = Observable;
   exports.rest = rest;
+  exports.isFunction = isFunction;
+  exports.isArray = isArray;
+  exports.isPlainObject = isPlainObject;
+  exports.isObject = isObject;
+  exports.isNative = isNative;
+  exports.isBoolean = isBoolean;
+  exports.isString = isString;
 
   Object.defineProperty(exports, '__esModule', { value: true });
 
