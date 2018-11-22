@@ -1,5 +1,6 @@
+import baseKeys from './baseKeys'
 export default function baseEach(obj={},iteratee,thisArg){
-    let keys=Object.keys(value);
+    let keys=baseKeys(value);
     let len=keys.length,i=-1,key;
     while(++i<len){
         key=keys[i]
