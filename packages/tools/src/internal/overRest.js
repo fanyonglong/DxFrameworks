@@ -1,5 +1,5 @@
 
-import apply from './_apply'
+import apply from './apply'
 /* Built-in method references for those with the same name as other `lodash` methods. */
 var nativeMax = Math.max;
 

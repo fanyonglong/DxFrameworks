@@ -1,1 +1,1 @@
-export {default} from './each';
+export {default as each} from './each';

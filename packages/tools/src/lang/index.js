@@ -6,11 +6,13 @@ const objectCtorString=_funcString.call(Object)
 export function isFunction(obj){
     return typeof obj=='function';
 }
-
-export function isArray(obj){
-    return  _toString.call(obj)=='[object Array]';
+let isArray=Array.isArray;//ie9
+if (!Array.isArray) {
+    isArray =function isArray(obj){
+        return  _toString.call(obj)=='[object Array]';
+    }
 }
-
+export {isArray}
 export function isObjectLike(value) {
     return value != null && typeof value == 'object';
   }
