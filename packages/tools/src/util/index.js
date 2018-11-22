@@ -11,7 +11,7 @@ export function property(key) {
 /**
  * 定义属性
  * @param {object} target 
- * @param {string} key 
+ * @param {string | number | symbol} key 
  * @param {PropertyDescriptor} attributes 
  */
 export function defineProperty(target,key,attributes){
@@ -25,9 +25,15 @@ export function defineProperty(target,key,attributes){
 export function defineProperties(target,properties){
   Object.defineProperties(target,properties)
 }
-
+/**
+ * @param  {object} target
+ * @param  {string | number | symbol} key
+ * @param  {any} value
+ * @param  {boolean} enumerable=false
+ * @param  {boolean} configurable=true
+ */
 export function defineProto(target,key,value,enumerable=false,configurable=true){
-  defineReadonly(target,key,{
+  defineProperty(target,key,{
     configurable: configurable,
     enumerable: enumerable,
     value: value,
@@ -35,11 +41,27 @@ export function defineProto(target,key,value,enumerable=false,configurable=true)
   })
 }
 export function defineReadonly(target,key,value,enumerable=false,configurable=true){
-  defineReadonly(target,key,{
+  defineProperty(target,key,{
     configurable: configurable,
     enumerable: enumerable,
     value: value,
     writable: false
+  })
+}
+/**
+ * @param  {object} target
+ * @param  {string | number | symbol} key
+ * @param  {any} setter
+ * @param  {any} getter
+ * @param  {boolean} enumerable=false
+ * @param  {boolean} configurable=true
+ */
+export function defineGetSet(target,key,setter,getter,enumerable=false,configurable=true){
+  defineProperty(target,key,{
+    configurable: configurable,
+    enumerable: enumerable,
+    get: setter,
+    set: getter
   })
 }
 

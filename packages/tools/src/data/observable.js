@@ -17,10 +17,27 @@ function observe(value){
     }
     return ob;
 }
+let reactivePropertyDescriptor={
+    configurable:true,
+    enumerable: true,
+    writable: true
+}
+function defineReactive(target,key,value){
+    if(!isPlainObject(target)&&!isArray(target)){
+        return;
+    }    
+    let desc=Object.getOwnPropertyDescriptor(target,key);
+    let setter=desc&&desc.set;
+    let getter=desc&&desc.get;
+    
+    reactivePropertyDescriptor.set=function(){
 
-function defineReactive(obj){
-        
- 
+    }
+    reactivePropertyDescriptor.get=function(){
+
+    }   
+    Object.defineProperty(target,key,reactivePropertyDescriptor)
+
 }
 
 
@@ -41,9 +58,7 @@ class Observable{
 
     }
 }
-class Observable{
 
-}
 class ObservableObject{
     constructor(){
         

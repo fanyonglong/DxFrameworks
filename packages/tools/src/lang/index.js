@@ -14,7 +14,7 @@ export function isArray(obj){
 export function isObjectLike(value) {
     return value != null && typeof value == 'object';
   }
-export function isPlainObject(obj){
+export function isPlainObject(value){
       if (!isObjectLike(value)) {
         return false;
       }
