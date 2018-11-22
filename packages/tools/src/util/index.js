@@ -8,6 +8,41 @@ export function property(key) {
       return obj == null ? void 0 : obj[key];
     };
 }
+/**
+ * 定义属性
+ * @param {object} target 
+ * @param {string} key 
+ * @param {PropertyDescriptor} attributes 
+ */
+export function defineProperty(target,key,attributes){
+  Object.defineProperty(target,key,attributes)
+}
+/**
+ * 定义多个属性
+ * @param  {object} target
+ * @param  {PropertyDescriptorMap} properties
+ */
+export function defineProperties(target,properties){
+  Object.defineProperties(target,properties)
+}
+
+export function define(target,key,value,enumerable=false,configurable=true){
+  defineReadonly(target,key,{
+    configurable: configurable,
+    enumerable: enumerable,
+    value: value,
+    writable: true
+  })
+}
+export function defineReadonly(target,key,value,enumerable=false,configurable=true){
+  defineReadonly(target,key,{
+    configurable: configurable,
+    enumerable: enumerable,
+    value: value,
+    writable: false
+  })
+}
+
 
 if (typeof Object.assign != 'function') {
     // Must be writable: true, enumerable: false, configurable: true

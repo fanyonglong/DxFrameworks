@@ -20,12 +20,10 @@ function observe(value){
 
 function defineReactive(obj){
         
+ 
 }
 
 
-/*** 
- * 观察对象
-*/
 class Observable{
     constructor(value){
         value[OB_OBJ_KEY]=this;

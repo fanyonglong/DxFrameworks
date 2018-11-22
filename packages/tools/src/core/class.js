@@ -23,6 +23,11 @@ Class.extend=function(proto){
             configurable: true
         }
     });
+    if(Object.setPrototypeOf){
+        Object.setPrototypeOf(subClass, superClass)
+    }else{
+        Object.assign(subClass, superClass)
+    }
     // 继承静态属性和方法
     
     // if (superClass){
