@@ -26,7 +26,7 @@ export function defineProperties(target,properties){
   Object.defineProperties(target,properties)
 }
 
-export function define(target,key,value,enumerable=false,configurable=true){
+export function defineProto(target,key,value,enumerable=false,configurable=true){
   defineReadonly(target,key,{
     configurable: configurable,
     enumerable: enumerable,
