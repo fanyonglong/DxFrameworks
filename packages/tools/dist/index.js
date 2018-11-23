@@ -1,10 +1,10 @@
 /* @desc 工具库 
  @author fanyonglong */
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('os')) :
-  typeof define === 'function' && define.amd ? define(['exports', 'os'], factory) :
-  (factory((global.dx = {}),global.os));
-}(this, (function (exports,os) { 'use strict';
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+  typeof define === 'function' && define.amd ? define(['exports'], factory) :
+  (factory((global.dx = {})));
+}(this, (function (exports) { 'use strict';
 
   function _typeof(obj) {
     if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
@@ -41,13 +41,20 @@
         writable: true,
         configurable: true
       }
-    }); // 继承静态属性和方法
+    });
+
+    if (Object.setPrototypeOf) {
+      Object.setPrototypeOf(subClass, superClass);
+    } else {
+      Object.assign(subClass, superClass);
+    } // 继承静态属性和方法
     // if (superClass){
     //     // ie11 支持:setPrototypeOf 低版本chrome和FireFox支持__proto__
     //     Object.setPrototypeOf
     //       ? Object.setPrototypeOf(subClass, superClass)
     //       : (subClass.__proto__ = superClass);
     // }
+
 
     return subClass;
   };
@@ -68,38 +75,80 @@
     });
   };
 
-  var _toString = Object.prototype.toString;
-  var _funcString = Function.prototype.toString;
-  function isFunction(obj) {
-    return typeof obj == 'function';
-  }
-  function isArray(obj) {
-    return _toString.call(obj) == '[object Array]';
-  }
-  function isPlainObject(obj) {
-    return _toString.call(obj) == '[object Object]';
-  }
-  function isObject(obj) {
-    return _typeof(obj) == 'object';
-  }
-  var _reg_native = /\[native code\]/;
-  function isNative(obj) {
-    if (!isFunction(obj)) {
-      return false;
-    }
-
-    return _reg_native.test(_funcString.call(obj));
-  }
-  function isBoolean(obj) {
-    return typeof obj === 'boolean';
-  }
-  function isString(obj) {
-    return typeof obj === 'string';
-  }
-
   var _hasOwnProperty = Object.prototype.hasOwnProperty;
   function hasOwn(target, key) {
     return _hasOwnProperty.call(target, key);
+  }
+  function property(key) {
+    return function (obj) {
+      return obj == null ? void 0 : obj[key];
+    };
+  }
+  /**
+   * 定义属性
+   * @param {object} target 
+   * @param {string | number | symbol} key 
+   * @param {PropertyDescriptor} attributes 
+   */
+
+  function defineProperty(target, key, attributes) {
+    Object.defineProperty(target, key, attributes);
+  }
+  /**
+   * 定义多个属性
+   * @param  {object} target
+   * @param  {PropertyDescriptorMap} properties
+   */
+
+  function defineProperties(target, properties) {
+    Object.defineProperties(target, properties);
+  }
+  /**
+   * @param  {object} target
+   * @param  {string | number | symbol} key
+   * @param  {any} value
+   * @param  {boolean} enumerable=false
+   * @param  {boolean} configurable=true
+   */
+
+  function defineProto(target, key, value) {
+    var enumerable = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+    var configurable = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : true;
+    defineProperty(target, key, {
+      configurable: configurable,
+      enumerable: enumerable,
+      value: value,
+      writable: true
+    });
+  }
+  function defineReadonly(target, key, value) {
+    var enumerable = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+    var configurable = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : true;
+    defineProperty(target, key, {
+      configurable: configurable,
+      enumerable: enumerable,
+      value: value,
+      writable: false
+    });
+  }
+  /**
+   * @param  {object} target
+   * @param  {string | number | symbol} key
+   * @param  {any} setter
+   * @param  {any} getter
+   * @param  {boolean} enumerable=false
+   * @param  {boolean} configurable=true
+   */
+
+  function defineGetSet(target, key, setter, getter) {
+    var enumerable = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
+    var configurable = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : true;
+    defineProperty(target, key, {
+      configurable: configurable,
+      enumerable: enumerable,
+      get: setter,
+      set: getter
+    });
   }
 
   if (typeof Object.assign != 'function') {
@@ -160,8 +209,115 @@
 
   var utils = ({
     hasOwn: hasOwn,
+    property: property,
+    defineProperty: defineProperty,
+    defineProperties: defineProperties,
+    defineProto: defineProto,
+    defineReadonly: defineReadonly,
+    defineGetSet: defineGetSet,
     completeAssign: completeAssign
   });
+
+  var functionProto = Function.prototype;
+  var _funcString = functionProto.toString;
+  var objectProto = Object.prototype;
+  var _toString = objectProto.toString;
+
+  var objectCtorString = _funcString.call(Object);
+  var INFINITY = Infinity;
+  var MAX_INTEGER = Number.MAX_VALUE; // 安全数2^53
+  function isUndefined(value) {
+    return typeof value == 'undefined';
+  }
+  function isLength(value) {
+    return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+  }
+  function isArrayLike$1(value) {
+    return value != null && isLength(value.length) && !isFunction(value);
+  }
+  function isFunction(obj) {
+    return typeof obj == 'function';
+  }
+  exports.isArray = Array.isArray; //ie9
+
+  if (!Array.isArray) {
+    exports.isArray = function isArray(obj) {
+      return _toString.call(obj) == '[object Array]';
+    };
+  }
+  function isObjectLike(value) {
+    return value != null && _typeof(value) == 'object';
+  }
+  function isPlainObject(value) {
+    if (!isObjectLike(value)) {
+      return false;
+    }
+
+    var proto = Object.getPrototypeOf(value);
+
+    if (proto === null) {
+      return true;
+    }
+
+    var Ctor = hasOwn(proto, 'constructor') && proto.constructor;
+    return typeof Ctor == 'function' && Ctor instanceof Ctor && _funcString.call(Ctor) == objectCtorString;
+  }
+  function isObject(obj) {
+    return _toString.call(obj) == '[object Object]';
+  }
+  var _reg_native = /\[native code\]/;
+  function isNative(obj) {
+    if (!isFunction(obj)) {
+      return false;
+    }
+
+    return _reg_native.test(_funcString.call(obj));
+  }
+  function isPrototype(value) {
+    var Ctor = value && value.constructor,
+        proto = typeof Ctor == 'function' && Ctor.prototype || objectProto;
+    return value === proto;
+  }
+  function isBoolean(obj) {
+    return typeof obj === 'boolean';
+  }
+  function isString(obj) {
+    return typeof obj === 'string';
+  }
+  function isSymbol(value) {
+    return _typeof(value) == 'symbol';
+  }
+  /**
+   * Checks if `value` is suitable for strict equality comparisons, i.e. `===`.
+   *
+   * @private
+   * @param {*} value The value to check.
+   * @returns {boolean} Returns `true` if `value` if suitable for strict
+   *  equality comparisons, else `false`.
+   */
+
+  function isStrictComparable(value) {
+    return value === value && !isObject(value);
+  } //确定传递的值类型及本身是否是有限数。
+
+  function toFinite(value) {
+    if (!value) {
+      return value === 0 ? value : 0;
+    }
+
+    if (value === INFINITY || value === -INFINITY) {
+      var sign = value < 0 ? -1 : 1;
+      return sign * MAX_INTEGER;
+    }
+
+    return value === value ? value : 0;
+  } //计算传递的值并将其转换为整数 (或无穷大)。
+
+  function toInteger(value) {
+    var result = toFinite(value),
+        remainder = result % 1;
+    return result === result ? remainder ? result - remainder : result : 0;
+  }
 
   /**
    * 添加监听事件
@@ -351,6 +507,42 @@
   }();
 
   /**
+   * @param  {number} count
+   * @param  {functon} fn
+   */
+  function after(n, func) {
+    return function () {
+      if (--n < 1) {
+        return func.apply(this, arguments);
+      }
+    };
+  }
+
+  /**
+   * This method returns the first argument it receives.
+   *
+   * @static
+   * @since 0.1.0
+   * @memberOf _
+   * @category Util
+   * @param {*} value Any value.
+   * @returns {*} Returns `value`.
+   * @example
+   *
+   * var object = { 'a': 1 };
+   *
+   * console.log(_.identity(object) === object);
+   * // => true
+   */
+  function identity(value) {
+    return value;
+  }
+
+  function partial(func) {}
+
+  function noop() {}
+
+  /**
    * A faster alternative to `Function#apply`, this function invokes `func`
    * with the `this` binding of `thisArg` and the arguments of `args`.
    *
@@ -416,26 +608,6 @@
   }
 
   /**
-   * This method returns the first argument it receives.
-   *
-   * @static
-   * @since 0.1.0
-   * @memberOf _
-   * @category Util
-   * @param {*} value Any value.
-   * @returns {*} Returns `value`.
-   * @example
-   *
-   * var object = { 'a': 1 };
-   *
-   * console.log(_.identity(object) === object);
-   * // => true
-   */
-  function identity(value) {
-    return value;
-  }
-
-  /**
    * 包装函数，分配参数
    * @param {function} fn 
    */
@@ -444,19 +616,116 @@
     return overRest(fn, start, identity);
   }
 
+  function arrayEach() {
+    var array = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+    var iteratee = arguments.length > 1 ? arguments[1] : undefined;
+    var thisArg = arguments.length > 2 ? arguments[2] : undefined;
+    var len = array.length,
+        i = -1;
+
+    while (++i < len) {
+      if (iteratee.call(thisArg || array[i], array[i], i, array) === false) {
+        break;
+      }
+    }
+  }
+
+  function baseKeys(object) {
+    var result = [];
+    var object = Object(object);
+
+    for (var key in object) {
+      if (hasOwn(object, key) && key != 'constructor') {
+        result.push(key);
+      }
+    }
+
+    return result;
+  }
+
+  function baseEach() {
+    var obj = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var iteratee = arguments.length > 1 ? arguments[1] : undefined;
+    var thisArg = arguments.length > 2 ? arguments[2] : undefined;
+    var keys = baseKeys(value);
+    var len = keys.length,
+        i = -1,
+        key;
+
+    while (++i < len) {
+      key = keys[i];
+
+      if (iteratee.call(thisArg || obj[key], obj[key], key, obj) === false) {
+        break;
+      }
+    }
+  }
+
+  function each(collection, iteratee, context) {
+    var eachFunc = exports.isArray(collection) ? arrayEach : baseEach;
+    eachFunc(collection, iteratee, context);
+  }
+
+  /**
+   * 
+   * @param {object} target 
+   * @param  {...object|array|function} sources 
+   */
+
+  function extend(target) {
+    var i = -1,
+        len = arguments.length <= 1 ? 0 : arguments.length - 1,
+        source;
+
+    while (++i < len) {
+      source = i + 1 < 1 || arguments.length <= i + 1 ? undefined : arguments[i + 1];
+
+      if (isObjectLike(source)) {
+        each(source, function (value, key) {
+          target[key] = value;
+        });
+      }
+    }
+
+    return target;
+  }
+
+  function some(collection, predicate) {}
+
+  function keys(collection) {
+    var keysFunc = isArrayLike$1(collection) ? arrayEach : baseKeys;
+    return keysFunc(collection);
+  }
+
   var util = utils;
 
   exports.util = util;
   exports.Class = Class;
   exports.Observable = Observable;
+  exports.after = after;
+  exports.identity = identity;
+  exports.partial = partial;
+  exports.noop = noop;
   exports.rest = rest;
+  exports.isUndefined = isUndefined;
+  exports.isLength = isLength;
+  exports.isArrayLike = isArrayLike$1;
   exports.isFunction = isFunction;
-  exports.isArray = isArray;
+  exports.isObjectLike = isObjectLike;
   exports.isPlainObject = isPlainObject;
   exports.isObject = isObject;
   exports.isNative = isNative;
+  exports.isPrototype = isPrototype;
   exports.isBoolean = isBoolean;
   exports.isString = isString;
+  exports.isSymbol = isSymbol;
+  exports.isStrictComparable = isStrictComparable;
+  exports.toFinite = toFinite;
+  exports.toInteger = toInteger;
+  exports.each = each;
+  exports.extend = extend;
+  exports.some = some;
+  exports.keys = keys;
 
   Object.defineProperty(exports, '__esModule', { value: true });
 

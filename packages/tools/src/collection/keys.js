@@ -1,5 +1,5 @@
 
-import {isArrayLike} from './lang'
+import {isArrayLike} from '../lang'
 import arrayLikeKeys from '../internal/arrayEach'
 import baseKeys from '../internal/baseKeys'
 export default function keys(collection){

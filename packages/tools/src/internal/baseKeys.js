@@ -1,5 +1,5 @@
 import {hasOwn} from '../util'
-export function baseKeys(object) {
+export default function baseKeys(object) {
     var result = [];
     var object=Object(object)
     for (var key in object) {
