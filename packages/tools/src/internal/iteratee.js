@@ -2,7 +2,7 @@ import {isFunction,isObject} from '../lang'
 import {baseKeys} from './baseKeys'
 import {baseEach} from './baseEach'
  
-function matchData(value){
+function isMatchData(value){
     
 }
 function baseIteratee(value){
