@@ -75,6 +75,15 @@ export function isString(obj){
 export function isSymbol(value) {
     return typeof value == 'symbol';
 }
+export function isPrimitive (value) {
+    return (
+      typeof value === 'string' ||
+      typeof value === 'number' ||
+      // $flow-disable-line
+      typeof value === 'symbol' ||
+      typeof value === 'boolean'
+    )
+  }
   /**
    * Checks if `value` is suitable for strict equality comparisons, i.e. `===`.
    *
