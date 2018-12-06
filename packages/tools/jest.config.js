@@ -13,8 +13,8 @@ module.exports={
      "**/__test__/unit/*.@(js|jsx)"
    ],
    transform: {
-   // "^.+\\.jsx?$":'babel-jest'
-    "^.+\\.jsx?$":path.resolve(__dirname,'./config/jest/transformer.js')
+    "^.+\\.jsx?$":'babel-jest'
+   // "^.+\\.jsx?$":path.resolve(__dirname,'./config/jest/transformer.js')
       //  "^.+\\.jsx?$":'babel-jest'//path.resolve(process.cwd(),'node_modules/babel-jest/build')  // "babel-jest"
    },
    /** 

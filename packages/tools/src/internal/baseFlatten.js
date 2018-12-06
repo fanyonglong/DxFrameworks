@@ -1,3 +1,3 @@
-function baseFlatten(array,deep=1){
-    array.
+export default function baseFlatten(array,deep=1){
+  
 }

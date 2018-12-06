@@ -10,7 +10,7 @@
     "start": "",
     "build": "webpack --config build/webpack.prod.js",
     "build:dev": "webpack --config build/webpack.dev.js --not-html",
-    "tools:babel": "babel ./packages/tools/src/index.js --out-dir ./packages/tools/dist/dx",
+    "tools:babel": "babel ./packages/tools/src/index.js -d ./packages/tools/dist",
     "tools:build": "rollup -c ./packages/tools/build/rollup.config.js",
     "tools:test": "jest --config ./packages/tools/jest.config.js"
   },

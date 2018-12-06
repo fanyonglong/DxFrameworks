@@ -48,8 +48,8 @@ export default {
          * */
         babel(
             {
-                babelrc:true,
-                configFile:path.resolve(root,'babel.config.js'),
+               // babelrc:true,
+               // configFile:path.resolve(root,'babel.config.js'),
                 /**类型：boolean | MatchPattern | Array<MatchPattern>
 默认：opts.root
 放置：允许在Babel的编程选项中，或在加载的内部configFile。程序化选项将覆盖配置文件。
@@ -71,14 +71,14 @@ export default {
 "upward-optional"- 从"root"目录向上走，查找包含babel.config.js 文件的目录，"root"如果babel.config.js 找不到，则回退到目录。*
                  * 
                  */
-                rootMode:'root',
-               // externalHelpers: true,
-                // presets:[['env',{
-                //         targets:{
-                //             browsers:['last 3 versions','ie >= 9'],
-                //         },
-                //        modules: false                   
-                // }]],
+            //     rootMode:'root',
+            //    // externalHelpers: true,
+            //     presets:[['@babel/preset-env',{
+            //             targets:{
+            //                 browsers:['last 3 versions','ie >= 9'],
+            //             },
+            //            modules: false                   
+            //     }]],
                // runtimeHelpers:true,
                 // /***
                 //  * runtime 编译器插件做了以下三件事：
