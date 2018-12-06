@@ -1,4 +1,4 @@
-class DSet{
+class Set{
     constructor(){
         this._values={};
     }

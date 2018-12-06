@@ -4,6 +4,7 @@
   "description": "base",
   "main": "dist/index.js",
   "scripts": {
+    "flow": "flow",
     "express:tools": "node ./server/tools-express.js",
     "testmvvm": "jest --config ./packages/mvvm/jest.config.js",
     "dev": "webpack-dev-server --config build/webpack.dev.js",
@@ -37,6 +38,7 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
     "@babel/plugin-syntax-dynamic-import": "^7.0.0",
     "@babel/plugin-transform-classes": "^7.1.0",
+    "@babel/plugin-transform-flow-strip-types": "^7.2.0",
     "@babel/plugin-transform-runtime": "^7.1.0",
     "@babel/preset-env": "^7.1.6",
     "@babel/preset-es2015": "^7.0.0-beta.53",
@@ -51,6 +53,7 @@
     "css-loader": "^0.28.11",
     "express": "^4.16.4",
     "file-loader": "^1.1.11",
+    "flow-bin": "^0.87.0",
     "html-webpack-plugin": "^3.1.0",
     "image-webpack-loader": "^4.2.0",
     "jasmine": "^3.1.0",

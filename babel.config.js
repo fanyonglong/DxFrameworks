@@ -95,7 +95,7 @@ let presets = [
 
 // 从上到下
 let plugins=[
-
+  ['@babel/plugin-transform-flow-strip-types'],
 // ['@babel/plugin-external-helpers'],
    ['@babel/plugin-proposal-class-properties',{ "loose": true }],
   // ['@babel/helper-module-imports'],

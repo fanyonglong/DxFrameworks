@@ -1,0 +1,14 @@
+[ignore]
+.*/node_modules/.*
+.*/reference/.*
+[include]
+./packages/tools/
+[libs]
+
+[lints]
+
+[options]
+all=false
+module.file_ext=.js
+module.system.node.resolve_dirname=./packages/tools/
+[strict]
