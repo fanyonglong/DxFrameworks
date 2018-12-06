@@ -13,7 +13,7 @@ interface MapLike<T>{
 export class Map<T> implements MapLike<T>{
     size:number;
     constructor(){
-
+        this._maps={}
     }
     get(key:string){
 
