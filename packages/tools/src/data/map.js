@@ -1,6 +1,6 @@
 // @flow
 
-interface MapLike{
+interface MapLike<T>{
     +size:number;
     get(key: string): T | undefined;
     has(key: string): boolean;
@@ -10,6 +10,15 @@ interface MapLike{
     entries(): Iterator<[string, T]>;
 }
 
-export class Map implements MapLike{
+export class Map<T> implements MapLike<T>{
     size:number;
+    constructor(){
+
+    }
+    get(key:string){
+
+    }
+    has(key:string){
+        
+    }
 }
