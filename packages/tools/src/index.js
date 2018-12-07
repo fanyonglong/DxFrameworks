@@ -1,4 +1,4 @@
-export * from './core'
+export * from './class'
 export * from './function'
 export * from './lang'
 export * from './data'

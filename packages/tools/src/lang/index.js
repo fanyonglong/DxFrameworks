@@ -33,9 +33,15 @@ if (!Array.isArray) {
     }
 }
 export {isArray}
+/**
+ * object,array
+*/
 export function isObjectLike(value) {
     return value != null && typeof value == 'object';
-  }
+}
+/** 
+ * {}，Object.create(null)
+*/
 export function isPlainObject(value){
       if (!isObjectLike(value)) {
         return false;
@@ -48,12 +54,18 @@ export function isPlainObject(value){
       return typeof Ctor == 'function' && Ctor instanceof Ctor &&
       _funcString.call(Ctor) == objectCtorString;
 }
-
+/** 
+ * {} array function
+*/
 export function isObject(obj){
-    return  _toString.call(obj)=='[object Object]';
+    var type = typeof value;
+    return value != null && (type == 'object' || type == 'function');
 }
 
 const _reg_native=/\[native code\]/;
+/*
+是否系统函数
+* */
 export function isNative(obj){
     if(!isFunction(obj)){
         return false;

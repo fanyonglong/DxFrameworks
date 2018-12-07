@@ -1,9 +1,11 @@
 import {hasOwn} from '../util'
-export default function baseKeys(object) {
+import {isPrototype} from '../lang'
+export default function baseKeys(object,inherited) {
     var result = [];
-    var object=Object(object)
+    var isProto=isPrototype(object)
+    var object=Object(object);
     for (var key in object) {
-      if (hasOwn(object, key) && key != 'constructor') {
+      if ((inherited||hasOwn(object, key)) &&!(isProto&&key == 'constructor')) {
          result.push(key);
       }
     }

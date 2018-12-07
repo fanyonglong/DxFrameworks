@@ -21,5 +21,5 @@ function replaceHolders(array, placeholder) {
     return result;
   }
 export default function partial(func,...partials){
-
+    
 }

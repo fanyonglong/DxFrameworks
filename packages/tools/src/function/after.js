@@ -1,5 +1,6 @@
 
 /**
+ * 执行n次后，触发回调函数
  * @param  {number} count
  * @param  {functon} fn
  */

@@ -2,7 +2,7 @@
 import {isObjectLike,isArray} from '../lang'
 import each from './each'
 /**
- * 
+ * 扩展对象
  * @param {object} target 
  * @param  {...object|array|function} sources 
  */
