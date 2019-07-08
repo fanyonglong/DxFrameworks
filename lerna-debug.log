@@ -1,0 +1,21 @@
+0 silly argv { _: [ 'create' ],
+0 silly argv   lernaVersion: '3.15.0',
+0 silly argv   '$0':
+0 silly argv    'C:\\Program Files\\nodejs\\node_global\\node_modules\\lerna\\cli.js',
+0 silly argv   name: 'pack' }
+1 notice cli v3.15.0
+2 verbose rootPath c:\fanyonglong\githubs\DxFrameworks
+3 info versioning independent
+4 error Error: canceled
+4 error     at Interface.<anonymous> (c:\fanyonglong\githubs\DxFrameworks\node_modules\read\lib\read.js:66:13)
+4 error     at Interface.emit (events.js:189:13)
+4 error     at Interface._ttyWrite (readline.js:783:16)
+4 error     at ReadStream.onkeypress (readline.js:168:10)
+4 error     at ReadStream.emit (events.js:189:13)
+4 error     at emitKeys (internal/readline.js:424:14)
+4 error     at emitKeys.next (<anonymous>)
+4 error     at ReadStream.onData (readline.js:1022:36)
+4 error     at ReadStream.emit (events.js:189:13)
+4 error     at addChunk (_stream_readable.js:284:12)
+4 error     at readableAddChunk (_stream_readable.js:265:11)
+4 error     at ReadStream.Readable.push (_stream_readable.js:220:10)

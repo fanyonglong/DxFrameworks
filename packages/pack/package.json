@@ -1,0 +1,29 @@
+{
+  "name": "pack",
+  "version": "1.0.0",
+  "description": "web pack",
+  "keywords": [
+    "pack"
+  ],
+  "author": "fanyonglong <yonglong5305350@163.com>",
+  "homepage": "https://github.com/fanyonglong/DxFrameworks/tree/master/packages/pack#readme",
+  "license": "ISC",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fanyonglong/DxFrameworks.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/fanyonglong/DxFrameworks/issues"
+  }
+}

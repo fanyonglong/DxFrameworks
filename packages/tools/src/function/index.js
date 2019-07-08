@@ -1,5 +1,0 @@
-export {default as after} from './after'
-export {default as identity} from './identity'
-export {default as partial} from './partial'
-export {default as noop} from './noop'
-export {default as rest} from './rest'

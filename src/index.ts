@@ -1,2 +1,0 @@
-
-import Dx from './instance'
