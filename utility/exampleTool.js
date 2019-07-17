@@ -192,6 +192,7 @@
                 this.controlMap[property]=control;
                 return control;
             }
+            ExmapleInstance.prototype.addOperation=ExmapleInstance.prototype.add;
             ExmapleInstance.prototype.set=function(property,value){
                 this.controlMap[property].setValue(value);
             }
