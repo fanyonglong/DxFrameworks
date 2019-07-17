@@ -29,6 +29,7 @@
             function ExmapleInstance(options){
                 options=Object.assign({},defaultOptions,options||{});
                 var container=options.container;
+                 var parent=this;
                 var gui=this.gui=new dat.GUI({
                        // name:"three设置",
                         width:400,
@@ -56,6 +57,7 @@
                     container.appendChild(el);
                     var pageHandler;
                     var init=false;
+                    this.parent=parent;
                     this.title=title;
                     this.callback=fn;
                     this.show=function(){
