@@ -5,8 +5,10 @@
                 options={};
             }
             if(typeof creator!=='function'){
-                creator=function(page){
-                    page.callback();
+                creator=function(example){
+                   return function(page){
+                        page.callback();
+                   }
                 }
             }
             var defaultOptions={
@@ -172,7 +174,7 @@
                         page.refresh();
                     }
                 });
-                
+                creator=creator(this);
                 setTimeout(function(){
                     var keys=Object.keys(pages);
                     if(keys.length>0){
