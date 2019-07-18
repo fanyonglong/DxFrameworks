@@ -162,6 +162,7 @@
                     if(page){
                         page.show();
                         currentPageValue=value;
+                        window.location.hash=value;
                     }
                 }
                 var exampleControl=this.add('examples','',examplesOptions);
@@ -174,11 +175,15 @@
                         page.refresh();
                     }
                 });
+                function getHash(){
+                     return window.location.hash.substr(1);
+                }
                 creator=creator(this);
                 setTimeout(function(){
                     var keys=Object.keys(pages);
                     if(keys.length>0){
-                        showPage(keys[0]);
+                        var hash=getHash();
+                        showPage(hash||keys[0]);
                     }
                 }, 0);
                
