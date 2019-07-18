@@ -154,6 +154,9 @@
                     exampleControl.__select.appendChild(option);
                 }
                 function showPage(value){
+                     if(value==currentPageValue){
+                            return; 
+                     }
                     var prevPage=currentPageValue;
                     var page=pages[value];
                     if(prevPage&&prevPage!==value&&pages[prevPage]){
@@ -163,6 +166,7 @@
                         page.show();
                         currentPageValue=value;
                         window.location.hash=value;
+                        exampleControl.setValue(value)
                     }
                 }
                 var exampleControl=this.add('examples','',examplesOptions);
