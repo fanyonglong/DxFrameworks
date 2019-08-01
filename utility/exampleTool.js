@@ -1,4 +1,57 @@
 
+ function createOptionsGui(options, gui, immediately, add, descObj) {
+            var titles;
+            if (_.isPlainObject(immediately)) {
+                descObj = immediately.desc;
+                add = immediately.add;
+                titles = immediately.titles;
+                immediately = immediately.immediately;
+
+            }
+            immediately = immediately == undefined ? false : immediately;
+            var keys = Object.keys(options), callback, addIsFunc = _.isFunction(add);
+            keys.forEach(function (key) {
+                var control, value = options[key], isNormal = true;
+                if (addIsFunc) {
+                    control = add(gui, key, value, options);
+                    isNormal = control === undefined ? true : false;
+                }
+                if (isNormal) {
+                    if (value && typeof value == 'string' && /^(#|rgb|hsl)/.test(value)) {
+                        control = gui.addColor(options, key)
+                    } else if (_.isPlainObject(value) && value.type == 'options') {
+                        options[key] = value.value;
+                        control = gui.add(options, key, value.options);
+                    } else if (_.isArray(value)) {
+                        options[key] = value[0];
+                        control = gui.add.apply(gui, [options, key].concat(value.slice(1)))
+                    } else {
+                        control = gui.add(options, key)
+                    }
+                }
+                if (_.isPlainObject(descObj) && _.has(descObj, key)) {
+                    control.name(descObj[key])
+                }
+                if (_.isPlainObject(titles) && _.has(titles, key)) {
+                    control.__li.firstElementChild.firstElementChild.setAttribute('title', titles[key])
+                }
+                if (!_.isFunction(value)) {
+                    control.onChange(_.partial(handlerChange, key));
+                    //control.onChange(_.debounce(_.partial(handlerChange, key),1000));
+                }
+            })
+            function handlerChange(name, value) {
+                if (callback) {
+                    callback(name, value, options);
+                }
+            }
+            return function (_callback) {
+                callback = _callback;
+                if (immediately) {
+                    handlerChange('*', '')
+                }
+            }
+        }
         function ExampleFactory(options,creator){
             if(typeof options=='function'){
                 creator=options;
