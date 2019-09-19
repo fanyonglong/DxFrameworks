@@ -57,6 +57,12 @@ export default function (api) {
                 type:"input",
                 name:"outpath",
                 message:"请输入生成目标路径",
+                validate:function(value){
+                    if(value!==undefined&&String(value).trim()!==""){
+                        return true;
+                    }
+                    return '请输入生成目标路径'
+                },
                // default:api.paths.absSrcPath,
                 transformer(v){
                     return join(api.paths.absSrcPath,v);
@@ -66,17 +72,13 @@ export default function (api) {
         return answers;
     }
     api.registerCommand('template', {
-        description: 'block related commands, e.g. add, list',
+        description: 'add tempalte',
         usage: `umi template <command>`,
         details:"",
     }, (args) => {
-        log.success('command-block', args)
-
-       
-    
        return  buildTemplate().then((obj)=>{
             if(!fs.existsSync(obj.path)){
-                console.log('不存在')
+                log.error('不存在')
                 throw '不存在';
             }
             globFiles('**/*.@(js|less|sass|jsx)',{
