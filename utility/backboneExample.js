@@ -1,5 +1,5 @@
   (function (exports) {
-
+            
             var { Model, View, Router, Collection, Event, history } = Backbone;
             var ContainerView = Backbone.View.extend({
                 _isContainerView: true,
@@ -198,5 +198,5 @@
                 }
             }
             exports.ContainerView = ContainerView;
-            exports.addViewExample = createExample()
-        }(this));
+            exports.createViewExample = createExample()
+        })();
