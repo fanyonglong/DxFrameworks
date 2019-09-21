@@ -198,5 +198,5 @@
                 }
             }
             exports.ContainerView = ContainerView;
-            exports.createViewExample = createExample()
-        })();
+            exports.createViewExample = createExample;
+        })(this);
