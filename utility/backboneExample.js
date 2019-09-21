@@ -1,4 +1,4 @@
- (function (exports) {
+  (function (exports) {
 
             var { Model, View, Router, Collection, Event, history } = Backbone;
             var ContainerView = Backbone.View.extend({
@@ -26,6 +26,7 @@
                     }
                     if (this.model) {
                         this.listenTo(this.model, 'change', this.render.bind(this));
+                        this.listenTo(this.model, 'destroy', this.remove.bind(this));
                     }
                     if (this.collection) {
                         this.listenTo(this.collection, 'update', this.render.bind(this));
@@ -39,6 +40,11 @@
                     }
                     this.render();
                     this.resize();
+                },
+                clear:function(){
+                    if(this.model){
+                        this.model.destroy();
+                    }
                 },
                 hide: function () {
                     this.$el.hide();
@@ -68,10 +74,10 @@
                     }
                     return this;
                 },
+
                 removeView: function (view) {
                     if (this.hasView(view)) {
                         this.views.delete(view.cid);
-                        view.removeAllView();
                         view.remove();
                     }
                     return this;
