@@ -197,6 +197,49 @@
                     router.route(view.cid, addView.bind(null, view))
                 }
             }
+              function addGuiModel(gui, model, options) {
+            options = _.defaults(options || {}, {
+                features: {}
+            })
+            var attributes = model.toJSON(), features = options.features;
+            function defineAttr(obj, value, name) {
+                var descriptor = Object.getOwnPropertyDescriptor(obj, name);
+                if (descriptor.configurable === false) {
+                    return;
+                }
+                Object.defineProperty(obj, name, {
+                    get: function () {
+                        return model.get(name)
+                    },
+                    set: function (v) {
+                        //]
+                        model.set(name, v, {
+                            silent: true
+                        })
+                    }
+                });
+                function setValue(value) {
+                    model.trigger('change:' + name, model, value);
+                    model.trigger('change', model);
+
+                }
+                var feature = _.extend({
+                    immediately: false,// 立即更新
+                    type: "input",
+                    args: []
+                }, features[name] || {});
+                var args = [obj, name].concat(feature.args);
+                var listenName = feature.immediately ? 'onChange' : 'onFinishChange';
+                if (feature.type === 'input') {
+                    gui.add.apply(gui, args)[listenName](setValue)
+                }
+                else if (feature.type === 'color') {
+                    gui.addColor.apply(gui, args)[listenName](setValue)
+                }
+            }
+            _.each(attributes, _.partial(defineAttr, attributes))
+        }
+    exports.addGuiModel=addGuiModel;
             exports.ContainerView = ContainerView;
             exports.createViewExample = createExample;
         })(this);
