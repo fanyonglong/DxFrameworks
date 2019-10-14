@@ -1,4 +1,4 @@
-  (function (exports) {
+(function (exports) {
             
             var { Model, View, Router, Collection, Event, history } = Backbone;
             var ContainerView = Backbone.View.extend({
@@ -177,6 +177,20 @@
                     curerntView = view;
                     switchView(prevView, curerntView)
                 }
+                var loadedViews={};
+                function loadShowView(options){
+                    var view =loadedViews[options.cid];
+                    if(!view){
+                       view = new (ContainerView.extend(_.extend({
+                            gui:options.gui,
+                            className: "h-100 w-100"
+                        }, options)))();
+                        view.$el.attr('id', options.cid)
+                        loadedViews[options.cid]=view;
+                    }
+                    addView(view);
+              
+                }
 
                 var listPage = gui.add({ page: "" }, 'page', []).onChange(function (v) {
                     if (v) {
@@ -185,16 +199,16 @@
                     }
                 });
                 start();
+
+                
+                var cid=0;
                 return function (options) {
-                    var title = options.title || "";
-                    var view = new (ContainerView.extend(_.extend({
-                        gui: gui.addFolder(title),
-                        className: "h-100 w-100"
-                    }, options)))();
-                    view.$el.attr('id', view.cid)
-                    view.gui.hide();
-                    viewStack.push(view);
-                    router.route(view.cid, addView.bind(null, view))
+                    options.title = options.title || "";
+                    options.cid='exmaple'+(cid++);
+                    options.gui= gui.addFolder(options.title);
+                    options.gui.hide();
+                    viewStack.push(options);
+                    router.route(options.cid, loadShowView.bind(null, options))
                 }
             }
               function addGuiModel(gui, model, options) {
