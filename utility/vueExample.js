@@ -1,4 +1,26 @@
- function createViewExample() {
+   function addGui(gui, obj, callback, options) {
+                _.each(obj, function (v, k) {
+                    if (_.isPlainObject(v)) {
+                        d3Helper.addGui(gui.addFolder(k), v, callback, options ? options[k] : null)
+                        return;
+                    }
+                    var type = 'add';
+                    var args = [];
+                    if (options && options[k]) {
+                        type = options[k].type || type;
+                        args = options[k].args || [];
+                    }
+                    if (type == 'color') {
+                        type = 'addColor'
+                    }
+
+                    gui[type].apply(gui, [obj, k].concat(args)).onFinishChange(function (v) {
+                        callback(v, k);
+                    })
+                })
+                return obj;
+            }
+function createViewExample() {
             var examples=[];         
             function init() {
                 var routes=[];
